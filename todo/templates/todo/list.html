@@ -1,0 +1,64 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+</head>
+<body>
+<div class="hero-body">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-half is-offset-one-quarter">
+                <h1 class="title">Todo</h1>
+                <ul>
+                    <li><a href="{% url 'todo-add' %}">Todo Add</a></li>
+                </ul>
+                <br>
+
+                <p>Total active: <strong>{{ total_active }}</strong></p>
+                <p>Total mark as done: <strong>{{ total_inactive }}</strong></p>
+                <br>
+
+                <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Mark Done</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for todo in objects_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                {% if not todo.status %}
+                                    <p style="text-decoration: line-through">{{ todo.title }}</p>
+                                {% else %}
+                                    <p>{{ todo.title }}</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if todo.status %}
+                                    <span class="tag is-success"></span>
+                                {% else %}
+                                    <span class="tag is-danger"></span>
+                                {% endif %}
+                            </td>
+                            <td>{{ todo.created|naturaltime }}</td>
+                            <td><a class="delete" href="{% url 'todo-mark-done' todo.pk %}"></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

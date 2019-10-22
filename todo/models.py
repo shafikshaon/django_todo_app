@@ -8,12 +8,4 @@ class Todo(models.Model):
 
     class Meta:
         app_label = 'todo'
-        ordering = ('-created',)
-
-    @property
-    def total_active_todo(self):
-        return self._meta.model.objects.filter(status=True).count()
-
-    @property
-    def total_inactive_todo(self):
-        return self._meta.model.objects.filter(status=False).count()
+        ordering = ('-status', '-created',)
